@@ -1,0 +1,33 @@
+<table>
+    <thead>
+        <tr>
+            <th>Product Name</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {{foreach $order.getAllVisibleItems() as $item}}
+        <tr>
+            <td>{{$item->getName()}}</td>
+            <td>{{block class='Magento\Framework\Pricing\Render' area='frontend' template='Magento_Catalog::product/price/amount.phtml' price_value=$item->getPrice()}}</td>
+            <td>{{$item->getQtyOrdered()}}</td>
+            <td>{{block class='Magento\Framework\Pricing\Render' area='frontend' template='Magento_Catalog::product/price/amount.phtml' price_value=$item->getRowTotal()}}</td>
+        </tr>
+        {{/foreach}}
+    </tbody>
+</table>
+
+$objectManager = \Magento\Framework\App\ObjectManager::getInstance();
+$order = $objectManager->create('Magento\Sales\Model\Order')->load($orderId);
+
+$items = $order->getAllItems();
+
+foreach ($items as $item) {
+    $product = $item->getProduct();
+    $productName = $product->getName();
+    $productPrice = $product->getPrice();
+    $qtyOrdered = $item->getQtyOrdered();
+    // and so on
+}
