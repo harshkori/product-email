@@ -31,3 +31,14 @@ foreach ($items as $item) {
     $qtyOrdered = $item->getQtyOrdered();
     // and so on
 }
+this is admin comment
+$order = $objectManager->create('Magento\Sales\Api\OrderRepositoryInterface');
+$order = $order->get('000000006');
+// $adminComments = $order->getStatusHistoryCollection()->addFieldToFilter('is_customer_notified',['eq'] => 1)->getItems();
+
+$history=$objectManager->create('Magento\Sales\Model\ResourceModel\Order\Status\History\Collection');
+$historyCollection=$history->addFieldToSelect('*')->addFieldToFilter('parent_id', $order->getId())->addFieldToFilter('is_customer_notified', 1);
+foreach ($historyCollection as $comment) {
+    echo $comment->getComment() ."<br>". "\n";
+}
+
